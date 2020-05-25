@@ -1,0 +1,39 @@
+﻿{% extends "shop/base.html" %}
+{% load static %}
+{% block title %}
+Товары
+{% endblock %}
+{% block content %}
+<div class="main">
+    <div class="jumbotron">
+        <h3>Категории</h3>
+        <ul>
+            <li {% if not category %}class="selected"{% endif %}>
+                <a href="{% url "shop:product_list" %}">Все</a>
+            </li>
+            {% for c in categories %}
+                <li {% if category.slug == c.slug %}class="selected"{% endif %}>
+                    <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div id="main_products">
+        <h1>{% if category %}{{ category.name }}{% else %}Все{% endif %}</h1>
+        <div class="main_flex">
+            {% for product in products %}
+                <div class="flex_item">
+                    <div class="card">
+                        <a href="{{ product.get_absolute_url }}">
+                            <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}" style="width:20%">
+                        </a>
+                        <a href="{{ product.get_absolute_url }}">{{ product.name }}</a><br><br>
+                        {{ product.price }} рублей
+
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
